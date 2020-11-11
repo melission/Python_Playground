@@ -132,8 +132,7 @@ def plotStats(fileName):
         # ensure that valid data was collected
         if ratings == [] or durations == []:
             print('No valid Album Rating or Total Time data in %s' % fileName)
-    # Originally 'return' wasn't hided, thus the next blocks of the code weren't working
-    # return
+            return
 
     # scatter plot
     x = np.array(durations, np.int32)
