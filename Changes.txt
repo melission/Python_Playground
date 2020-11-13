@@ -1,4 +1,12 @@
+The source with original code is here: https://github.com/electronut/pp
+
+
 'Parsing Itunes playlists.py':
     line 70-76
     line 95-96
     line 109-115
+
+'Spirographs.py'
+    line 227:     turtle.setup(width=0.8) # turtle method had that method, nonetheless IDEA says it's a mistake
+    line 233:     turtle.title("Spirographs!") # This method exists within lib, IDEA says it's a mistake.
+                                               # https://docs.python.org/3/library/turtle.html#turtle.title
