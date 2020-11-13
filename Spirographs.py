@@ -1,25 +1,27 @@
+import sys, random, argparse
+import numpy as np
 import math
 import turtle
 import random
-import datetime
 from PIL import Image
-import argparse
-
-# draw the circle using turtle
-def drawCircleTurtle(x, y, r):
-    # move to the start of the circle
-    turtle.up()
-    turtle.setpos(x + r, y)
-    turtle.down()
-
-    # draw the circle
-    for i in range(0, 365, 5):
-        a = math.radians(i)
-        turtle.setpos(x + r*math.cos(a), y + r*math.sin(a))
+from datetime import datetime
 
 
-drawCircleTurtle(100, 100, 50)
-turtle.mainloop()
+# # draw the circle using turtle
+# def drawCircleTurtle(x, y, r):
+#     # move to the start of the circle
+#     turtle.up()
+#     turtle.setpos(x + r, y)
+#     turtle.down()
+#
+#     # draw the circle
+#     for i in range(0, 365, 5):
+#         a = math.radians(i)
+#         turtle.setpos(x + r*math.cos(a), y + r*math.sin(a))
+#
+#
+# drawCircleTurtle(100, 100, 50)
+# turtle.mainloop()
 
 
 
@@ -55,25 +57,25 @@ class Spiro:
         # reduce r/R to its smallest form by dividing with the GCD
         # originally gcdVal = gcd(self.x, self.y), besides gcd is a part of math() since Python 3.5
         gcdVal = math.gcd(self.r, self.R)
-        self.nRot = self.r//gcdVal
+        self.nRot = self.r // gcdVal
         # get ratio of radii
-        self.k = r//float(R)
+        self.k = r/float(R)
         # set the colour
         self.t.color(*col)
         # store the current angle
         self.a = 0
 
     def restart(self):
-        # set the flag
+        # set flag
         self.drawingComplete = False
-        # show the turtle
+        # show turtle
         self.t.showturtle()
-        # go to the first point
+        # go to first point
         self.t.up()
         R, k, l = self.R, self.k, self.l
         a = 0.0
-        x = R*((1-k)*math.cos(a) + l*k*math.cos((1-k)*a/k))
-        y = R*((1-k)*math.sin(a) - l*k*math.sin((1-k)*a/k))
+        x = R * ((1 - k) * math.cos(a) + l * k * math.cos((1 - k) * a / k))
+        y = R * ((1 - k) * math.sin(a) - l * k * math.sin((1 - k) * a / k))
         self.t.setpos(self.xc + x, self.yc + y)
         self.t.down()
 
@@ -82,12 +84,11 @@ class Spiro:
         R, k, l = self.R, self.k, self.l
         for i in range(0, 360*self.nRot+1, self.step):
             a = math.radians(i)
-            x = R*((1-k)*math.cos(a) + l*k*math.cos((1-k)*a/k))
-            y = R*((1-k)*math.sin(a) - l*k*math.sin((1-k)*a/k))
+            x = R * ((1 - k) * math.cos(a) + l * k * math.cos((1 - k) * a / k))
+            y = R * ((1 - k) * math.sin(a) - l * k * math.sin((1 - k) * a / k))
             self.t.setpos(self.xc + x, self.yc + y)
-
-        # drawing is now done so hide the turtle cursor
-        self.t.hideturtle()
+            # drawing is now done so hide the turtle cursor
+            self.t.hideturtle()
 
     def update(self):
         # skip the rest of the steps if done
@@ -99,8 +100,8 @@ class Spiro:
         R, k, l = self.R, self.k, self.l
         # set the angle
         a = math.radians(self.a)
-        x = self.R*((1-k)*math.cos(a) + l*k*math.cos((1-k)*a/k))
-        y = self.R*((1-k)*math.sin(a) - l*k*math.sin((1-k)*a/k))
+        x = self.R * ((1 - k) * math.cos(a) + l * k * math.cos((1 - k) * a / k))
+        y = self.R * ((1 - k) * math.sin(a) - l * k * math.sin((1 - k) * a / k))
         self.t.setpos(self.xc + x, self.yc + y)
         # if drawing is complete, set the flag
         if self.a >= 360*self.nRot:
@@ -114,7 +115,6 @@ class Spiro:
 
 # a class for animating spiros
 class SpiroAnimator:
-
     # constructor
     def __init__(self, N):
         # set the timer value in milliseconds
@@ -130,8 +130,8 @@ class SpiroAnimator:
             # set the spiro paramenets
             spiro = Spiro(*rparams)
             self.spiros.append(spiro)
-            # call a timer
-            turtle.ontimer(self.update, self.deltaT)
+        # call a timer
+        turtle.ontimer(self.update, self.deltaT)
     
     # restart spiro drawing
     def restart(self):
@@ -152,7 +152,7 @@ class SpiroAnimator:
         r = random.randint(10, 9 * R // 10)
         l = random.uniform(0.1, 0.9)
         xc = random.randint(-width // 2, width // 2)
-        yc = random.randint(-height, height // 2)
+        yc = random.randint(-height // 2, height // 2)
         col = (random.random(),
                random.random(),
                random.random())
@@ -168,19 +168,19 @@ class SpiroAnimator:
             if spiro.drawingComplete:
                 nComplete += 1
 
-            # restart if all spiroes are complete
-            if nComplete == len(self.spiros):
-                self.restart()
-            # call the timer
-            turtle.ontimer(self.update, self.deltaT)
+        # restart if all spiroes are complete
+        if nComplete == len(self.spiros):
+            self.restart()
+        # call the timer
+        turtle.ontimer(self.update, self.deltaT)
 
-        # toggle turtle cursor on and off
-        def toggleTurtles(self):
-            for spiro in self.spiros:
-                if spiro.t.isvisible():
-                    spiro.t.hideturtle()
-                else:
-                    spiro.t.showturtle()
+    # toggle turtle cursor on and off
+    def toggleTurtles(self):
+        for spiro in self.spiros:
+            if spiro.t.isvisible():
+                spiro.t.hideturtle()
+            else:
+                spiro.t.showturtle()
 
 # save drawings as PNG files
 def saveDrawing():
@@ -188,7 +188,7 @@ def saveDrawing():
     turtle.hideturtle()
     # generate unique filenames
     dateStr = (datetime.now()).strftime("%d%b%Y-%H%M%S")
-    fileName = 'spiro' + dateStr
+    fileName = 'spiro-' + dateStr
     print('saving drawing to %s.png' % fileName)
     # get the tkinter canvas
     canvas = turtle.getcanvas()
@@ -196,7 +196,7 @@ def saveDrawing():
     canvas.postscript(file=fileName + '.eps')
     # use the Pillow module to convert the postscript image file to PNG
     img = Image.open(fileName + '.eps')
-    img.Save(fileName + 'png', 'png')
+    img.Save(fileName + '.png', 'png')
     # show the turtle cursor
     turtle.showturtle()
 
@@ -224,7 +224,7 @@ def main():
     args = parser.parse_args()
     
     # set the width of the drawing window to 80 per cent of the screen
-    turtle.setup(wigth=0.8)
+    turtle.setup(width=0.8)
     
     # set the cursor shape to turtle
     turtle.shape('turtle')
@@ -233,7 +233,7 @@ def main():
     turtle.title("Spirographs!")
     
     # add the key handler to save our graphs 
-    turtle.onkey((saveDrawing, 's'))
+    turtle.onkey(saveDrawing, "s")
     # start listening 
     turtle.listen()
     
@@ -249,7 +249,8 @@ def main():
         spiro.draw()
     else:
         # create the animator object
-        turtle.onkey(spiroAmin.toggleTurtle)
+        spiroAmin = SpiroAnimator(1)
+        turtle.onkey(spiroAmin.toggleTurtles, 't')
 
         # add a key handler to restart the animation
         turtle.onkey(spiroAmin.restart, 'space')
